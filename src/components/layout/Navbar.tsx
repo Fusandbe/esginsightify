@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronRight, BarChart3, Menu, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const Navbar = () => {
   const location = useLocation();
@@ -43,6 +44,12 @@ const Navbar = () => {
               Pricing
             </Link>
             <Link 
+              to="/blog" 
+              className={`text-sm font-medium ${isActive('/blog') ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+            >
+              Blog
+            </Link>
+            <Link 
               to="/about" 
               className={`text-sm font-medium ${isActive('/about') ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
             >
@@ -50,6 +57,7 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Link to="/signin">
               <Button variant="ghost" size="sm" className="hidden sm:inline-flex">
                 Sign In
@@ -91,6 +99,13 @@ const Navbar = () => {
                 onClick={closeMobileMenu}
               >
                 Pricing
+              </Link>
+              <Link 
+                to="/blog" 
+                className={`text-sm font-medium ${isActive('/blog') ? 'text-foreground' : 'text-muted-foreground'}`}
+                onClick={closeMobileMenu}
+              >
+                Blog
               </Link>
               <Link 
                 to="/about" 
