@@ -1,9 +1,16 @@
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
+import PricingToggle from "@/components/pricing/PricingToggle";
 
 const PricingPage = () => {
+  const [isAnnual, setIsAnnual] = useState(false);
+
+  const handleToggle = (value: boolean) => {
+    setIsAnnual(value);
+  };
+
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
       {/* Header */}
@@ -16,13 +23,9 @@ const PricingPage = () => {
         </p>
       </div>
 
-      {/* Pricing Toggle - Add functionality later if needed */}
-      <div className="mb-8 flex justify-center gap-4">
-        <span className="font-medium">Monthly</span>
-        <div className="relative inline-flex h-6 w-12 items-center rounded-full bg-muted">
-          <span className="absolute h-4 w-4 transform rounded-full bg-background transition-transform"></span>
-        </div>
-        <span className="font-medium">Annual <span className="rounded-full bg-primary/10 px-2 py-1 text-xs text-primary">Save 15%</span></span>
+      {/* Pricing Toggle */}
+      <div className="mb-8">
+        <PricingToggle isAnnual={isAnnual} onToggle={handleToggle} />
       </div>
 
       {/* Pricing Cards */}
@@ -30,6 +33,9 @@ const PricingPage = () => {
         <PricingCard
           title="Solo Angels"
           price={199}
+          annualPrice={2030}
+          monthlySavings={169}
+          totalSavings={358}
           description="Perfect for individual angel investors"
           features={[
             "Up to 10 startups in portfolio",
@@ -41,10 +47,14 @@ const PricingPage = () => {
           ]}
           cta="Start Free Trial"
           popular={false}
+          isAnnual={isAnnual}
         />
         <PricingCard
           title="Mid-Size VCs"
           price={799}
+          annualPrice={8150}
+          monthlySavings={679}
+          totalSavings={1438}
           description="Ideal for small to medium VC firms"
           features={[
             "Up to 50 startups in portfolio",
@@ -58,10 +68,14 @@ const PricingPage = () => {
           ]}
           cta="Start Free Trial"
           popular={true}
+          isAnnual={isAnnual}
         />
         <PricingCard
           title="Enterprise VCs"
           price={3000}
+          annualPrice={30600}
+          monthlySavings={2550}
+          totalSavings={5400}
           description="For established VC firms with extensive portfolios"
           features={[
             "Unlimited startups",
@@ -79,6 +93,7 @@ const PricingPage = () => {
           cta="Contact Sales"
           popular={false}
           enterprise={true}
+          isAnnual={isAnnual}
         />
       </div>
 
@@ -136,23 +151,31 @@ const PricingPage = () => {
   );
 };
 
-// Pricing Card Component
+// Pricing Card Component with updated props for annual pricing
 const PricingCard = ({
   title,
   price,
+  annualPrice,
+  monthlySavings,
+  totalSavings,
   description,
   features,
   cta,
   popular = false,
   enterprise = false,
+  isAnnual = false,
 }: {
   title: string;
   price: number;
+  annualPrice: number;
+  monthlySavings: number;
+  totalSavings: number;
   description: string;
   features: string[];
   cta: string;
   popular?: boolean;
   enterprise?: boolean;
+  isAnnual?: boolean;
 }) => {
   return (
     <div className={`relative rounded-lg border ${popular ? 'border-primary shadow-lg' : 'shadow-sm'} bg-card p-6`}>
@@ -163,9 +186,26 @@ const PricingCard = ({
       )}
       <div className="mb-6">
         <h3 className="text-2xl font-bold">{title}</h3>
-        <div className="mt-4 flex items-baseline">
-          <span className="text-3xl font-bold">${price}</span>
-          <span className="ml-1 text-muted-foreground">/month</span>
+        <div className="mt-4 flex flex-col">
+          {isAnnual ? (
+            <>
+              <div className="flex items-baseline">
+                <span className="text-3xl font-bold">${annualPrice}</span>
+                <span className="ml-1 text-muted-foreground">/year</span>
+              </div>
+              <div className="mt-1 text-sm text-green-600 font-medium">
+                Save ${totalSavings}
+              </div>
+              <div className="mt-1 text-sm text-muted-foreground">
+                ${monthlySavings}/mo billed annually
+              </div>
+            </>
+          ) : (
+            <div className="flex items-baseline">
+              <span className="text-3xl font-bold">${price}</span>
+              <span className="ml-1 text-muted-foreground">/month</span>
+            </div>
+          )}
         </div>
         <p className="mt-2 text-muted-foreground">{description}</p>
       </div>
