@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, File, X, FileText, Image, FileSpreadsheet, FilePresentationIcon } from "lucide-react";
+import { Upload, File, X, FileText, Image, FileSpreadsheet, PresentationIcon } from "lucide-react";
 
 const DocumentUploadCard = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -84,7 +83,7 @@ const DocumentUploadCard = () => {
     } else if (["xls", "xlsx", "csv"].includes(extension || "")) {
       return <FileSpreadsheet className="h-5 w-5 text-esg-green-600" />;
     } else if (["ppt", "pptx"].includes(extension || "")) {
-      return <FilePresentationIcon className="h-5 w-5 text-esg-amber-600" />;
+      return <PresentationIcon className="h-5 w-5 text-esg-amber-600" />;
     } else {
       return <File className="h-5 w-5 text-muted-foreground" />;
     }
