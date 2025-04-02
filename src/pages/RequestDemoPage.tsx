@@ -1,135 +1,391 @@
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { toast } from "sonner";
-import { ArrowRight, CheckCircle2, BarChart, Cpu, FileText, LineChart, GitCompare, Shield, Leaf } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "@/components/ui/use-toast";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Check, Server, Code, Database, RefreshCw, Layers, Zap } from "lucide-react";
 
-// Define the form schema
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
-  company: z.string().min(2, { message: "Company name is required." }),
-  position: z.string().min(2, { message: "Position is required." }),
-  companySize: z.enum(["1-10", "11-50", "51-200", "201-500", "501+"]),
+  company: z.string().min(1, { message: "Company name is required." }),
+  jobTitle: z.string().optional(),
+  companySize: z.string(),
   message: z.string().optional(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
-
 const RequestDemoPage = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  // Initialize the form
-  const form = useForm<FormValues>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
       company: "",
-      position: "",
-      companySize: "1-10",
+      jobTitle: "",
+      companySize: "",
       message: "",
     },
   });
 
-  // Handle form submission
-  const onSubmit = (data: FormValues) => {
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      console.log(data);
-      setIsSubmitting(false);
-      toast.success("Demo request submitted successfully! Our team will contact you shortly.");
-      form.reset();
-    }, 1500);
-  };
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    toast({
+      title: "Demo request submitted!",
+      description: "We'll contact you soon to schedule your personalized demo.",
+    });
+    console.log(values);
+    form.reset();
+  }
 
   return (
-    <div className="container mx-auto px-4 py-16 md:py-24">
-      {/* Hero Section */}
-      <div className="mb-16 text-center">
-        <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-          Experience Our <span className="gradient-heading">AI-Powered ESG Assessment</span> Tool
-        </h1>
-        <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground md:text-xl">
-          See firsthand how our advanced AI models can transform your investment due diligence 
-          process and improve your portfolio's ESG performance.
+    <div className="container mx-auto px-4 py-12 md:py-16">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold tracking-tight mb-4 md:text-5xl">Request a Demo</h1>
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          See how our AI-powered ESG assessment tool can enhance your investment due diligence process.
         </p>
       </div>
 
-      {/* Main Content */}
-      <div className="grid gap-12 md:grid-cols-2">
-        {/* Form Section */}
+      <div className="grid gap-10 lg:grid-cols-2 md:gap-16">
+        <div>
+          <Tabs defaultValue="overview" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="models">AI Models</TabsTrigger>
+              <TabsTrigger value="technical">Technical</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="overview" className="space-y-6 mt-6">
+              <div className="space-y-4">
+                <h3 className="text-2xl font-bold">ESG Assessment Tool</h3>
+                <p>Our AI-powered ESG assessment tool helps VCs and angel investors evaluate startups based on Environmental, Social, and Governance factors.</p>
+                
+                <ul className="space-y-2">
+                  <li className="flex gap-2">
+                    <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                    <span>Analyze startup pitch decks, business plans, and public content</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                    <span>Generate comprehensive ESG scores with detailed breakdowns</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                    <span>Identify ESG-related risks and opportunities</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                    <span>Track ESG performance over time</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                    <span>Benchmark startups against industry peers</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div>
+                <h3 className="text-2xl font-bold mb-2">Why Choose Our Tool?</h3>
+                <p className="mb-4">Our platform is specifically designed for early-stage investments with:</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg">Startup Focus</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm">Tailored specifically for evaluating early-stage companies</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg">Quick Analysis</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm">Get results in minutes, not days or weeks</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg">High Accuracy</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm">Over 85% accuracy in ESG factor identification</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg">Comprehensive View</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm">Evaluate E, S, and G factors with detailed breakdowns</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="models" className="space-y-6 mt-6">
+              <h3 className="text-2xl font-bold">Our AI Models</h3>
+              <p className="mb-4">Our platform leverages 7 interconnected ML and NLP models:</p>
+              
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>ESG Text Classification Models</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-2">Categorizes text into E, S, G, or non-ESG categories with fine-grained subcategories.</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Multi-label classification with industry context</li>
+                      <li>Understanding of startup-specific ESG terminology</li>
+                      <li>Built on pre-trained transformers (BERT, RoBERTa)</li>
+                      <li>Achieves &gt;85% F1 score accuracy</li>
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-2">
+                  <AccordionTrigger>Named Entity Recognition (NER) for ESG</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-2">Identifies ESG-specific entities like "20% carbon reduction" or "diverse board".</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Custom ESG entity types within E, S, G hierarchy</li>
+                      <li>Relationship extraction between entities</li>
+                      <li>Confidence scoring for identified entities</li>
+                      <li>Achieves &gt;80% F1 score</li>
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-3">
+                  <AccordionTrigger>ESG Sentiment Analysis</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-2">Assesses sentiment (positive, negative, neutral) of ESG-related content.</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>ESG-specific sentiment analysis</li>
+                      <li>Detection of greenwashing attempts</li>
+                      <li>Time-based sentiment tracking</li>
+                      <li>Achieves &gt;80% accuracy</li>
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-4">
+                  <AccordionTrigger>ESG Scoring Model</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-2">Generates quantitative ESG scores from qualitative data.</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Overall ESG score with E, S, G sub-scores</li>
+                      <li>Confidence intervals for all scores</li>
+                      <li>Industry-normalized scoring</li>
+                      <li>&lt;10% mean absolute error vs. expert ratings</li>
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-5">
+                  <AccordionTrigger>Risk Detection Model</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-2">Identifies ESG risks and red flags in startup documentation.</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Pre-defined risk categories with severity scores</li>
+                      <li>Threshold-based alerts</li>
+                      <li>False positive mitigation</li>
+                      <li>&lt;10% false positives, &gt;80% recall</li>
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-6">
+                  <AccordionTrigger>Opportunity Identification Model</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-2">Highlights ESG strengths and potential opportunities.</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Pattern matching with successful ESG strategies</li>
+                      <li>Impact estimation</li>
+                      <li>Growth prediction based on ESG factors</li>
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-7">
+                  <AccordionTrigger>Benchmark & Comparative Model</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-2">Compares startups to industry peers for relative ESG performance.</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>Dynamic peer group generation</li>
+                      <li>Statistical significance testing</li>
+                      <li>Visualization-ready outputs (radar charts, etc.)</li>
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </TabsContent>
+            
+            <TabsContent value="technical" className="space-y-6 mt-6">
+              <h3 className="text-2xl font-bold">Technical Implementation</h3>
+              <p className="mb-4">Our ESG assessment platform leverages cutting-edge technology:</p>
+              
+              <div className="space-y-8">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Layers className="h-5 w-5 text-primary" />
+                    <h4 className="text-xl font-semibold">Architecture</h4>
+                  </div>
+                  
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Model Architecture</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="flex gap-2">
+                        <Server className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+                        <span>NLP base: Transformer models (BERT, RoBERTa)</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Server className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+                        <span>Scoring: Ensemble of gradient boosting and neural networks</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Server className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+                        <span>Risk detection: Hybrid rules + anomaly detection</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Deployment</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="flex gap-2">
+                        <Code className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+                        <span>Containerized microservices (Docker)</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Code className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+                        <span>RESTful APIs with batch and real-time processing</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Code className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+                        <span>Model versioning and A/B testing support</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <RefreshCw className="h-5 w-5 text-primary" />
+                    <h4 className="text-xl font-semibold">Development Approach</h4>
+                  </div>
+                  
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Iterative Process</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="flex gap-2">
+                        <Check className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+                        <span>Start with MVP classification models</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Check className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+                        <span>Expand to scoring, risk, and opportunity models</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Check className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+                        <span>Refine with user feedback</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Validation</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        <p>Expert reviews, comparisons with existing ratings, continuous benchmarking</p>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Updating</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        <p>Scheduled retraining, drift detection, feedback loops</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Database className="h-5 w-5 text-primary" />
+                    <h4 className="text-xl font-semibold">Integration Requirements</h4>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>APIs</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p>RESTful endpoints with JSON outputs, authentication, and error handling</p>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Input/Output</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p>Handle PDFs, DOCX, PPTX, URLs; export CSV/JSON</p>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Pipeline</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p>Ingest, preprocess, analyze, aggregate, and format results</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+        
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>Request a Demo</CardTitle>
+              <CardTitle>Request Your Demo</CardTitle>
               <CardDescription>
-                Fill out the form below and our team will contact you to schedule a personalized demonstration.
+                Fill out the form below and our team will get back to you shortly to schedule a personalized demo.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="John Doe" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="john@example.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <FormField
                       control={form.control}
-                      name="company"
+                      name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Company</FormLabel>
+                          <FormLabel>Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Your Company" {...field} />
+                            <Input placeholder="John Doe" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -138,12 +394,42 @@ const RequestDemoPage = () => {
                     
                     <FormField
                       control={form.control}
-                      name="position"
+                      name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Position</FormLabel>
+                          <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input placeholder="Investment Manager" {...field} />
+                            <Input placeholder="john@example.com" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="company"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Company</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Acme Inc." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="jobTitle"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Job Title</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Investment Analyst" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -157,46 +443,23 @@ const RequestDemoPage = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Company Size</FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex flex-col space-y-1"
-                          >
-                            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5">
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="1-10" />
-                                </FormControl>
-                                <FormLabel className="font-normal">1-10</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="11-50" />
-                                </FormControl>
-                                <FormLabel className="font-normal">11-50</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="51-200" />
-                                </FormControl>
-                                <FormLabel className="font-normal">51-200</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="201-500" />
-                                </FormControl>
-                                <FormLabel className="font-normal">201-500</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="501+" />
-                                </FormControl>
-                                <FormLabel className="font-normal">501+</FormLabel>
-                              </FormItem>
-                            </div>
-                          </RadioGroup>
-                        </FormControl>
+                        <Select 
+                          onValueChange={field.onChange} 
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select company size" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="1-10">1-10 employees</SelectItem>
+                            <SelectItem value="11-50">11-50 employees</SelectItem>
+                            <SelectItem value="51-200">51-200 employees</SelectItem>
+                            <SelectItem value="201-500">201-500 employees</SelectItem>
+                            <SelectItem value="501+">501+ employees</SelectItem>
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -210,9 +473,9 @@ const RequestDemoPage = () => {
                         <FormLabel>Message (Optional)</FormLabel>
                         <FormControl>
                           <Textarea 
-                            placeholder="Tell us about your specific ESG assessment needs or questions..."
-                            className="min-h-[120px]"
-                            {...field}
+                            placeholder="Tell us about your specific ESG assessment needs..." 
+                            className="min-h-[120px]" 
+                            {...field} 
                           />
                         </FormControl>
                         <FormMessage />
@@ -220,176 +483,25 @@ const RequestDemoPage = () => {
                     )}
                   />
                   
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? "Submitting..." : "Request Demo"} 
-                    {!isSubmitting && <ArrowRight className="ml-2 h-4 w-4" />}
-                  </Button>
+                  <Button type="submit" className="w-full">Request Demo</Button>
                 </form>
               </Form>
             </CardContent>
           </Card>
-        </div>
-        
-        {/* Info Section */}
-        <div className="flex flex-col gap-6">
-          <h2 className="text-2xl font-bold">Our AI-Powered ESG Assessment Platform</h2>
           
-          <p className="text-muted-foreground">
-            The ESGInsightify platform leverages seven interconnected AI models to provide comprehensive 
-            ESG analysis for early-stage startups, helping VCs and angel investors make better investment decisions.
-          </p>
-          
-          <div className="grid gap-4 sm:grid-cols-2">
-            <ModelCard 
-              icon={<FileText className="h-6 w-6 text-primary" />}
-              title="ESG Text Classification"
-              description="Categorizes text into E, S, G, or non-ESG categories with fine-grained subcategories"
-            />
-            
-            <ModelCard 
-              icon={<Shield className="h-6 w-6 text-primary" />}
-              title="Named Entity Recognition"
-              description="Identifies ESG-specific entities like '20% carbon reduction' or 'diverse board'"
-            />
-            
-            <ModelCard 
-              icon={<LineChart className="h-6 w-6 text-primary" />}
-              title="ESG Sentiment Analysis"
-              description="Assesses sentiment of ESG-related content and detects greenwashing"
-            />
-            
-            <ModelCard 
-              icon={<BarChart className="h-6 w-6 text-primary" />}
-              title="ESG Scoring Model"
-              description="Generates quantitative ESG scores with sub-scores and confidence intervals"
-            />
-            
-            <ModelCard 
-              icon={<Leaf className="h-6 w-6 text-primary" />}
-              title="Risk Detection"
-              description="Identifies ESG risks and red flags with severity scores"
-            />
-            
-            <ModelCard 
-              icon={<Cpu className="h-6 w-6 text-primary" />}
-              title="Opportunity Identification"
-              description="Highlights ESG strengths and opportunities for growth"
-            />
-            
-            <ModelCard 
-              icon={<GitCompare className="h-6 w-6 text-primary" />}
-              title="Benchmark & Comparison"
-              description="Compares startups to peers with dynamic peer group generation"
-            />
-          </div>
-          
-          <div className="mt-4 space-y-4">
-            <h3 className="text-xl font-semibold">Key Performance Metrics</h3>
-            <ul className="space-y-2">
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
-                <span>Text classification accuracy: &gt;85% F1 score</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
-                <span>Entity recognition accuracy: &gt;80% F1 score</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
-                <span>Document analysis speed: &lt;30 seconds per pitch deck</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
-                <span>Score correlation with expert ratings: r &gt; 0.8</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0 text-primary" />
-                <span>Risk detection: &lt;10% false positives, &gt;80% recall</span>
-              </li>
-            </ul>
+          <div className="mt-6 rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="rounded-full bg-primary/10 p-2">
+                <Zap className="h-4 w-4 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-medium">Ready to get started?</h3>
+                <p className="text-sm text-muted-foreground">Demos typically last 30 minutes and are tailored to your needs.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      
-      {/* Demo Preview Section */}
-      <div className="mt-24 rounded-xl bg-muted p-8 text-center md:p-12">
-        <h2 className="mb-4 text-3xl font-bold md:text-4xl">What to Expect in Your Demo</h2>
-        <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
-          During your personalized demo, our team will show you how ESGInsightify can:
-        </p>
-        
-        <div className="grid gap-8 md:grid-cols-3">
-          <DemoFeature 
-            number="1"
-            title="Analyze Your Documents"
-            description="Upload pitch decks, financial reports, and other documents for instant ESG analysis."
-          />
-          
-          <DemoFeature 
-            number="2"
-            title="Generate ESG Scores"
-            description="See how our AI models generate comprehensive ESG scores with detailed breakdowns."
-          />
-          
-          <DemoFeature 
-            number="3"
-            title="Identify Risks & Opportunities"
-            description="Discover potential ESG risks and opportunities in your investment portfolio."
-          />
-        </div>
-        
-        <Button size="lg" className="mt-8">
-          Request Your Demo Today <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-      </div>
-    </div>
-  );
-};
-
-// Model Card Component
-const ModelCard = ({ 
-  icon, 
-  title, 
-  description 
-}: { 
-  icon: React.ReactNode; 
-  title: string; 
-  description: string;
-}) => {
-  return (
-    <Card>
-      <CardContent className="p-4">
-        <div className="flex items-start gap-4">
-          <div className="rounded-md bg-primary/10 p-2 text-primary">
-            {icon}
-          </div>
-          <div>
-            <h3 className="font-medium">{title}</h3>
-            <p className="text-sm text-muted-foreground">{description}</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
-// Demo Feature Component
-const DemoFeature = ({ 
-  number, 
-  title, 
-  description 
-}: { 
-  number: string; 
-  title: string; 
-  description: string;
-}) => {
-  return (
-    <div className="flex flex-col items-center">
-      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-xl font-bold text-primary-foreground">
-        {number}
-      </div>
-      <h3 className="mb-2 text-xl font-semibold">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
     </div>
   );
 };
