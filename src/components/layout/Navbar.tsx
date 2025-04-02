@@ -57,10 +57,17 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="flex items-center gap-2">
-            <ThemeToggle />
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
             <Link to="/signin">
               <Button variant="ghost" size="sm" className="hidden sm:inline-flex">
                 Sign In
+              </Button>
+            </Link>
+            <Link to="/demo">
+              <Button variant="outline" size="sm" className="hidden sm:inline-flex">
+                Request Demo
               </Button>
             </Link>
             <Link to="/signup">
@@ -113,6 +120,13 @@ const Navbar = () => {
                 onClick={closeMobileMenu}
               >
                 About
+              </Link>
+              <Link 
+                to="/demo" 
+                className={`text-sm font-medium ${isActive('/demo') ? 'text-foreground' : 'text-muted-foreground'}`}
+                onClick={closeMobileMenu}
+              >
+                Request Demo
               </Link>
               <Link 
                 to="/signin" 
