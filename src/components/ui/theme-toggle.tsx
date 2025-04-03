@@ -19,9 +19,12 @@ export function ThemeToggle({ variant = "button" }: { variant?: "button" | "togg
         aria-label="Toggle theme"
         pressed={theme === "dark"}
         onPressedChange={() => setTheme(theme === "dark" ? "light" : "dark")}
-        className="data-[state=on]:bg-muted"
+        className="data-[state=on]:bg-muted rounded-full w-9 h-9 p-0 flex items-center justify-center"
       >
-        {theme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+        {theme === "dark" ? 
+          <Moon className="h-4 w-4 transition-all duration-300 rotate-0" /> : 
+          <Sun className="h-4 w-4 transition-all duration-300 rotate-90" />
+        }
       </Toggle>
     );
   }
@@ -32,25 +35,25 @@ export function ThemeToggle({ variant = "button" }: { variant?: "button" | "togg
         <Button
           variant="ghost"
           size="icon"
-          className="focus-visible:ring-primary/30 relative overflow-hidden group"
+          className="focus-visible:ring-primary/30 relative overflow-hidden group rounded-full w-9 h-9 bg-gradient-to-br from-background to-muted/50 hover:from-muted/70 hover:to-background border border-primary/10"
           aria-label="Toggle theme"
         >
-          <Sun className="h-5 w-5 transition-transform scale-100 rotate-0 dark:scale-0 dark:rotate-90" />
-          <Moon className="absolute h-5 w-5 transition-transform scale-0 rotate-90 dark:scale-100 dark:rotate-0" />
+          <Sun className="h-[18px] w-[18px] transition-all duration-500 rotate-0 scale-100 dark:-rotate-90 dark:scale-0 text-primary" />
+          <Moon className="absolute h-[18px] w-[18px] transition-all duration-500 rotate-90 scale-0 dark:rotate-0 dark:scale-100 text-primary" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="backdrop-blur-sm bg-background/95 border-primary/20">
-        <DropdownMenuItem onClick={() => setTheme("light")} className="gap-2 cursor-pointer">
-          <Sun className="h-4 w-4" />
+      <DropdownMenuContent align="end" className="backdrop-blur-xl bg-background/95 border-primary/10 shadow-xl rounded-xl">
+        <DropdownMenuItem onClick={() => setTheme("light")} className="gap-2 cursor-pointer focus:bg-accent/20">
+          <Sun className="h-4 w-4 text-esg-amber-500" />
           <span>Light</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")} className="gap-2 cursor-pointer">
-          <Moon className="h-4 w-4" />
+        <DropdownMenuItem onClick={() => setTheme("dark")} className="gap-2 cursor-pointer focus:bg-accent/20">
+          <Moon className="h-4 w-4 text-primary" />
           <span>Dark</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")} className="gap-2 cursor-pointer">
-          <LaptopIcon className="h-4 w-4" />
+        <DropdownMenuItem onClick={() => setTheme("system")} className="gap-2 cursor-pointer focus:bg-accent/20">
+          <LaptopIcon className="h-4 w-4 text-esg-blue-500" />
           <span>System</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
