@@ -16,7 +16,7 @@ import {
   Sparkles, 
   Brain, 
   BarChart3, 
-  LineUp, 
+  LineChart, 
   PieChart, 
   Shield, 
   Zap, 
@@ -142,7 +142,7 @@ const RequestDemoPage = () => {
               <Card className="overflow-hidden border-t-4 border-t-esg-green-500 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-card to-background">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg flex items-center gap-2.5">
-                    <LineUp className="h-5 w-5 text-esg-green-500" />
+                    <LineChart className="h-5 w-5 text-esg-green-500" />
                     Startup Focus
                   </CardTitle>
                 </CardHeader>
