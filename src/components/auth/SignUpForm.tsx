@@ -44,6 +44,50 @@ const SignUpForm = () => {
     }
   };
 
+  const handleGoogleSignUp = async () => {
+    setIsLoading(true);
+    try {
+      // Mock Google authentication
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "Google Sign Up Successful",
+        description: "You have successfully signed up with Google.",
+      });
+      navigate("/dashboard");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to sign up with Google. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLinkedInSignUp = async () => {
+    setIsLoading(true);
+    try {
+      // Mock LinkedIn authentication
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "LinkedIn Sign Up Successful",
+        description: "You have successfully signed up with LinkedIn.",
+      });
+      navigate("/dashboard");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to sign up with LinkedIn. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Card className="mx-auto max-w-md">
       <CardHeader className="space-y-1">
@@ -139,8 +183,14 @@ const SignUpForm = () => {
           <Separator className="flex-1" />
         </div>
 
-        <div className="mt-4 grid gap-2">
-          <Button variant="outline" type="button" disabled={isLoading}>
+        <div className="mt-4 grid gap-3">
+          <Button 
+            variant="outline" 
+            type="button" 
+            onClick={handleGoogleSignUp}
+            disabled={isLoading}
+            className="bg-white hover:bg-gray-50 text-gray-800 border-gray-300"
+          >
             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -161,9 +211,15 @@ const SignUpForm = () => {
             </svg>
             Sign up with Google
           </Button>
-          <Button variant="outline" type="button" disabled={isLoading}>
+          <Button 
+            variant="outline" 
+            type="button" 
+            onClick={handleLinkedInSignUp}
+            disabled={isLoading}
+            className="bg-[#0077B5] hover:bg-[#0069a1] text-white border-[#0077B5]"
+          >
             <svg className="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
             </svg>
             Sign up with LinkedIn
           </Button>
