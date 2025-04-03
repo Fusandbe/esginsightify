@@ -17,7 +17,8 @@ import {
   Search,
   Diamond,
   Crown,
-  LogOut
+  LogOut,
+  User
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
