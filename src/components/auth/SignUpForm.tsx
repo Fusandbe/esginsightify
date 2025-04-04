@@ -9,6 +9,8 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAuth } from "@/providers/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
 
 const SignUpForm = () => {
   const [email, setEmail] = useState("");
@@ -18,25 +20,28 @@ const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Mock registration for demo
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Split name into first and last name for profile
+      const nameParts = name.split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+      
+      await signUp(email, password, { first_name: firstName, last_name: lastName });
       
       toast({
         title: "Account created",
-        description: "You have successfully created an account. You can now sign in.",
+        description: "You have successfully created an account. Please check your email to verify your account.",
       });
-      navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "An error occurred during sign up. Please try again.",
+        description: error?.message || "An error occurred during sign up. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -45,46 +50,50 @@ const SignUpForm = () => {
   };
 
   const handleGoogleSignUp = async () => {
-    setIsLoading(true);
     try {
-      // Mock Google authentication
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Google Sign Up Successful",
-        description: "You have successfully signed up with Google.",
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
       });
-      navigate("/dashboard");
+      
+      if (error) {
+        console.error('Google sign up error:', error);
+        toast({
+          title: "Error",
+          description: "Failed to sign up with Google. Please try again.",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
+      console.error('Unexpected error during Google sign up:', error);
       toast({
         title: "Error",
-        description: "Failed to sign up with Google. Please try again.",
+        description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const handleLinkedInSignUp = async () => {
-    setIsLoading(true);
     try {
-      // Mock LinkedIn authentication
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "LinkedIn Sign Up Successful",
-        description: "You have successfully signed up with LinkedIn.",
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'linkedin_oidc',
       });
-      navigate("/dashboard");
+      
+      if (error) {
+        console.error('LinkedIn sign up error:', error);
+        toast({
+          title: "Error",
+          description: "Failed to sign up with LinkedIn. Please try again.",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
+      console.error('Unexpected error during LinkedIn sign up:', error);
       toast({
         title: "Error",
-        description: "Failed to sign up with LinkedIn. Please try again.",
+        description: "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 

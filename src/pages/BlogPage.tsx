@@ -1,8 +1,9 @@
-
 import { Link } from "react-router-dom";
-import { Calendar, User, Tag, ArrowRight } from "lucide-react";
+import { Calendar, User, Tag, ArrowRight, Bookmark, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 // Sample blog post data
 const blogPosts = [
@@ -38,15 +39,31 @@ const blogPosts = [
   },
 ];
 
-// Featured post component
+// Featured post component with a trend chart instead of an image
 const FeaturedPost = ({ post }: { post: typeof blogPosts[0] }) => (
   <div className="grid gap-8 md:grid-cols-2 items-center">
-    <div>
-      <img 
-        src={post.image} 
-        alt={post.title} 
-        className="rounded-lg object-cover w-full aspect-video"
-      />
+    <div className="rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 to-background border p-6 flex items-center justify-center">
+      <div className="text-center">
+        <TrendingUp className="h-16 w-16 mb-4 mx-auto text-primary" />
+        <h3 className="text-xl font-semibold mb-2">ESG Performance Trends</h3>
+        <p className="text-muted-foreground">
+          Our analysis shows a 32% increase in ESG adoption among venture-backed startups in Q2 2023
+        </p>
+        <div className="mt-4 grid grid-cols-3 gap-2">
+          <Card className="p-3 text-center">
+            <div className="text-primary text-2xl font-bold">+28%</div>
+            <div className="text-xs text-muted-foreground">Environment</div>
+          </Card>
+          <Card className="p-3 text-center">
+            <div className="text-primary text-2xl font-bold">+35%</div>
+            <div className="text-xs text-muted-foreground">Social</div>
+          </Card>
+          <Card className="p-3 text-center">
+            <div className="text-primary text-2xl font-bold">+24%</div>
+            <div className="text-xs text-muted-foreground">Governance</div>
+          </Card>
+        </div>
+      </div>
     </div>
     <div className="space-y-4">
       <Badge variant="outline" className="bg-primary/10 text-primary">
@@ -197,10 +214,10 @@ const BlogPage = () => {
               Get the latest ESG insights delivered to your inbox.
             </p>
             <div className="space-y-2">
-              <input 
+              <Input 
                 type="email" 
                 placeholder="Your email address" 
-                className="w-full px-3 py-2 border rounded-md"
+                className="w-full px-3 py-2 border rounded-md text-foreground bg-background"
               />
               <Button className="w-full">Subscribe</Button>
             </div>

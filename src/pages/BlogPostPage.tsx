@@ -1,10 +1,9 @@
-
 import { useParams, Link } from "react-router-dom";
 import { Calendar, User, Tag, ArrowLeft, Share2, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 
-// Sample blog post data
 const blogPosts = [
   {
     id: "1",
@@ -114,7 +113,6 @@ const blogPosts = [
   },
 ];
 
-// Related Posts component
 const RelatedPosts = () => {
   return (
     <div className="space-y-4">
@@ -240,10 +238,10 @@ const BlogPostPage = () => {
               Get the latest ESG insights delivered to your inbox.
             </p>
             <div className="space-y-2">
-              <input 
+              <Input 
                 type="email" 
                 placeholder="Your email address" 
-                className="w-full px-3 py-2 border rounded-md"
+                className="w-full px-3 py-2 border rounded-md text-foreground bg-background"
               />
               <Button className="w-full">Subscribe</Button>
             </div>
