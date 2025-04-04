@@ -16,7 +16,8 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
+  DialogFooter
 } from "@/components/ui/dialog";
 
 const SignUpForm = () => {
@@ -29,6 +30,7 @@ const SignUpForm = () => {
   const navigate = useNavigate();
   const { signUp } = useAuth();
   const [setupDialogOpen, setSetupDialogOpen] = useState(false);
+  const [providerName, setProviderName] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,62 +59,34 @@ const SignUpForm = () => {
     }
   };
 
-  const handleGoogleSignUp = async () => {
+  const handleSocialSignUp = async (provider: 'google' | 'linkedin_oidc') => {
     try {
+      const providerDisplayName = provider === 'google' ? 'Google' : 'LinkedIn';
+      setProviderName(providerDisplayName);
+      
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: provider,
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: `${window.location.origin}/dashboard`,
+          scopes: provider === 'linkedin_oidc' ? 'profile email openid' : undefined
         }
       });
       
       if (error) {
-        console.error('Google sign up error:', error);
+        console.error(`${providerDisplayName} sign up error:`, error);
         
         if (error.message.includes('provider is not enabled')) {
           setSetupDialogOpen(true);
         } else {
           toast({
             title: "Error",
-            description: "Failed to sign up with Google. Please try again.",
+            description: `Failed to sign up with ${providerDisplayName}. ${error.message}`,
             variant: "destructive",
           });
         }
       }
     } catch (error) {
-      console.error('Unexpected error during Google sign up:', error);
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleLinkedInSignUp = async () => {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'linkedin_oidc',
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`
-        }
-      });
-      
-      if (error) {
-        console.error('LinkedIn sign up error:', error);
-        
-        if (error.message.includes('provider is not enabled')) {
-          setSetupDialogOpen(true);
-        } else {
-          toast({
-            title: "Error",
-            description: "Failed to sign up with LinkedIn. Please try again.",
-            variant: "destructive",
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Unexpected error during LinkedIn sign up:', error);
+      console.error('Unexpected error during social sign up:', error);
       toast({
         title: "Error",
         description: "An unexpected error occurred. Please try again.",
@@ -221,7 +195,7 @@ const SignUpForm = () => {
             <Button 
               variant="outline" 
               type="button" 
-              onClick={handleGoogleSignUp}
+              onClick={() => handleSocialSignUp('google')}
               disabled={isLoading}
               className="bg-white hover:bg-gray-50 text-gray-800 border-gray-300"
             >
@@ -248,7 +222,7 @@ const SignUpForm = () => {
             <Button 
               variant="outline" 
               type="button" 
-              onClick={handleLinkedInSignUp}
+              onClick={() => handleSocialSignUp('linkedin_oidc')}
               disabled={isLoading}
               className="bg-[#0077B5] hover:bg-[#0069a1] text-white border-[#0077B5]"
             >
@@ -270,26 +244,35 @@ const SignUpForm = () => {
       </Card>
 
       <Dialog open={setupDialogOpen} onOpenChange={setSetupDialogOpen}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Social Login Not Configured</DialogTitle>
+            <DialogTitle>{providerName} Login Not Configured</DialogTitle>
             <DialogDescription className="space-y-3 pt-4">
               <p>
-                The social login provider is not enabled in your Supabase project. You need to configure the provider in the Supabase dashboard.
+                The {providerName} login provider is not enabled in your Supabase project. You need to configure the provider in the Supabase dashboard.
               </p>
-              <p className="font-medium">Steps to configure social providers:</p>
+              <p className="font-medium">Steps to configure {providerName}:</p>
               <ol className="list-decimal pl-5 space-y-2">
                 <li>Go to the Supabase dashboard</li>
                 <li>Navigate to Authentication &gt; Providers</li>
-                <li>Enable and configure the Google and LinkedIn providers</li>
-                <li>Make sure to add the correct redirect URLs</li>
-                <li>Set your site URL in the Authentication settings</li>
+                <li>Enable and configure the {providerName} provider</li>
+                <li>Make sure to add the correct redirect URL: <code className="bg-muted p-1 rounded text-xs">{window.location.origin}/dashboard</code></li>
+                <li>Set your site URL in the Authentication settings to: <code className="bg-muted p-1 rounded text-xs">{window.location.origin}</code></li>
               </ol>
               <p className="mt-4 text-sm text-muted-foreground">
                 In the meantime, you can sign up with email and password.
               </p>
             </DialogDescription>
           </DialogHeader>
+          <DialogFooter className="sm:justify-start">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setSetupDialogOpen(false)}
+            >
+              Close
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

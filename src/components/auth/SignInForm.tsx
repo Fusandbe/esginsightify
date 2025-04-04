@@ -15,7 +15,8 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
+  DialogFooter
 } from "@/components/ui/dialog";
 
 const SignInForm = () => {
@@ -25,68 +26,41 @@ const SignInForm = () => {
   const { signIn, isLoading } = useAuth();
   const { toast } = useToast();
   const [setupDialogOpen, setSetupDialogOpen] = useState(false);
+  const [providerName, setProviderName] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await signIn(email, password);
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleSocialSignIn = async (provider: 'google' | 'linkedin_oidc') => {
     try {
+      const providerDisplayName = provider === 'google' ? 'Google' : 'LinkedIn';
+      setProviderName(providerDisplayName);
+      
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: provider,
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: `${window.location.origin}/dashboard`,
+          scopes: provider === 'linkedin_oidc' ? 'profile email openid' : undefined
         }
       });
       
       if (error) {
-        console.error('Google sign in error:', error);
+        console.error(`${providerDisplayName} sign in error:`, error);
         
         if (error.message.includes('provider is not enabled')) {
           setSetupDialogOpen(true);
         } else {
           toast({
-            title: "Google Sign In Failed",
+            title: `${providerDisplayName} Sign In Failed`,
             description: error.message,
             variant: "destructive",
           });
         }
       }
     } catch (error) {
-      console.error('Unexpected error during Google sign in:', error);
-      toast({
-        title: "Authentication Error",
-        description: "An unexpected error occurred. Please try again later.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleLinkedInSignIn = async () => {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'linkedin_oidc',
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`
-        }
-      });
-      
-      if (error) {
-        console.error('LinkedIn sign in error:', error);
-        
-        if (error.message.includes('provider is not enabled')) {
-          setSetupDialogOpen(true);
-        } else {
-          toast({
-            title: "LinkedIn Sign In Failed",
-            description: error.message,
-            variant: "destructive",
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Unexpected error during LinkedIn sign in:', error);
+      console.error(`Unexpected error during social sign in:`, error);
       toast({
         title: "Authentication Error",
         description: "An unexpected error occurred. Please try again later.",
@@ -169,8 +143,9 @@ const SignInForm = () => {
             <Button 
               variant="outline" 
               type="button" 
-              onClick={handleGoogleSignIn}
+              onClick={() => handleSocialSignIn('google')}
               disabled={isLoading}
+              className="relative"
             >
               <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                 <path
@@ -195,10 +170,11 @@ const SignInForm = () => {
             <Button 
               variant="outline" 
               type="button" 
-              onClick={handleLinkedInSignIn}
+              onClick={() => handleSocialSignIn('linkedin_oidc')}
               disabled={isLoading}
+              className="relative bg-[#0077B5] hover:bg-[#0069a1] text-white border-[#0077B5]"
             >
-              <svg className="mr-2 h-4 w-4" fill="#0077B5" viewBox="0 0 24 24">
+              <svg className="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
               </svg>
               Sign in with LinkedIn
@@ -216,26 +192,35 @@ const SignInForm = () => {
       </Card>
 
       <Dialog open={setupDialogOpen} onOpenChange={setSetupDialogOpen}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Social Login Not Configured</DialogTitle>
+            <DialogTitle>{providerName} Login Not Configured</DialogTitle>
             <DialogDescription className="space-y-3 pt-4">
               <p>
-                The social login provider is not enabled in your Supabase project. You need to configure the provider in the Supabase dashboard.
+                The {providerName} login provider is not enabled in your Supabase project. You need to configure the provider in the Supabase dashboard.
               </p>
-              <p className="font-medium">Steps to configure social providers:</p>
+              <p className="font-medium">Steps to configure {providerName}:</p>
               <ol className="list-decimal pl-5 space-y-2">
                 <li>Go to the Supabase dashboard</li>
                 <li>Navigate to Authentication &gt; Providers</li>
-                <li>Enable and configure the Google and LinkedIn providers</li>
-                <li>Make sure to add the correct redirect URLs</li>
-                <li>Set your site URL in the Authentication settings</li>
+                <li>Enable and configure the {providerName} provider</li>
+                <li>Make sure to add the correct redirect URL: <code className="bg-muted p-1 rounded text-xs">{window.location.origin}/dashboard</code></li>
+                <li>Set your site URL in the Authentication settings to: <code className="bg-muted p-1 rounded text-xs">{window.location.origin}</code></li>
               </ol>
               <p className="mt-4 text-sm text-muted-foreground">
                 In the meantime, you can sign in with email and password.
               </p>
             </DialogDescription>
           </DialogHeader>
+          <DialogFooter className="sm:justify-start">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setSetupDialogOpen(false)}
+            >
+              Close
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>
