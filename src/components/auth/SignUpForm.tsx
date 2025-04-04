@@ -42,22 +42,6 @@ const SignUpForm = () => {
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
       
-      // Check if email already exists
-      const { data: { user }, error: checkError } = await supabase.auth.admin.getUserByEmail(email).catch(() => ({
-        data: { user: null },
-        error: null
-      }));
-      
-      if (user) {
-        toast({
-          title: "Email already in use",
-          description: "This email is already registered. Please sign in instead.",
-          variant: "destructive",
-        });
-        setIsLoading(false);
-        return;
-      }
-      
       await signUp(email, password, { first_name: firstName, last_name: lastName });
       
       toast({
