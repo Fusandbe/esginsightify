@@ -42,6 +42,22 @@ const SignUpForm = () => {
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
       
+      // Check if email already exists
+      const { data: { user }, error: checkError } = await supabase.auth.admin.getUserByEmail(email).catch(() => ({
+        data: { user: null },
+        error: null
+      }));
+      
+      if (user) {
+        toast({
+          title: "Email already in use",
+          description: "This email is already registered. Please sign in instead.",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+      
       await signUp(email, password, { first_name: firstName, last_name: lastName });
       
       toast({
@@ -49,11 +65,22 @@ const SignUpForm = () => {
         description: "You have successfully created an account. Please check your email to verify your account.",
       });
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error?.message || "An error occurred during sign up. Please try again.",
-        variant: "destructive",
-      });
+      console.error("Sign up error:", error);
+      
+      // Handle specific error cases
+      if (error.message?.includes("User already registered")) {
+        toast({
+          title: "Email already in use",
+          description: "This email is already registered. Please sign in instead.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: error?.message || "An error occurred during sign up. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
