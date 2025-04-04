@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
@@ -23,16 +22,12 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
-  // Helper function to check if a link is active
   const isActive = (path: string) => location.pathname === path;
 
-  // Toggle mobile menu
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
   
-  // Close mobile menu
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
-  // Add scroll detection for enhanced navbar appearance
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -59,7 +54,7 @@ const Navbar = () => {
             <div className="rounded-xl bg-gradient-to-r from-primary to-primary/80 p-1.5 shadow-sm">
               <BarChart3 className="h-6 w-6 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">ESGInsightify</span>
+            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">EcoVest</span>
           </Link>
         </div>
         <div className="flex items-center gap-4">
@@ -170,7 +165,6 @@ const Navbar = () => {
                 Get Started <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-0.5 transition-transform duration-300" />
               </Button>
             </Link>
-            {/* Mobile menu button */}
             <Button 
               variant="ghost" 
               size="icon" 
@@ -183,7 +177,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="border-b bg-background/95 backdrop-blur-xl md:hidden shadow-lg">
           <div className="container py-4">
