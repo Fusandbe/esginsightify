@@ -38,10 +38,7 @@ const SignInForm = () => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-          queryParams: {
-            client_id: '1002040921149-lrbbe37r22dvdne0vu32qd15ijqjff5r.apps.googleusercontent.com'
-          }
+          redirectTo: `${window.location.origin}/dashboard`
         }
       });
       

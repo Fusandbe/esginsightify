@@ -8,7 +8,6 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    // Added Google OAuth configuration
     flowType: 'pkce',
   }
 });
