@@ -18,10 +18,11 @@ export function CursorEffect() {
       const isClickable = 
         target.tagName === 'BUTTON' || 
         target.tagName === 'A' || 
-        target.closest('button') || 
-        target.closest('a') ||
+        target.closest('button') !== null || 
+        target.closest('a') !== null ||
         window.getComputedStyle(target).cursor === 'pointer';
       
+      // Set isPointer to true or false based on whether element is clickable
       setIsPointer(isClickable);
       setIsVisible(true);
     };
