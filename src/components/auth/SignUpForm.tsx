@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, Sparkles } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
@@ -109,19 +109,26 @@ const SignUpForm = () => {
 
   return (
     <>
-      <Card className="mx-auto max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-          <CardDescription>
+      <Card className="mx-auto max-w-md relative overflow-hidden glow-border bg-background/70 backdrop-blur-md">
+        {/* Premium decorative elements */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-accent/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+        
+        <CardHeader className="space-y-1 relative">
+          <div className="absolute top-0 right-0 w-16 h-16 flex items-center justify-center">
+            <Sparkles className="h-5 w-5 text-primary/70 animate-pulse-slow" />
+          </div>
+          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Create an account</CardTitle>
+          <CardDescription className="text-muted-foreground">
             Enter your information to create your account
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name" className="text-foreground/90">Full Name</Label>
               <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <User className="absolute left-3 top-3 h-4 w-4 text-primary" />
                 <Input
                   id="name"
                   type="text"
@@ -134,9 +141,9 @@ const SignUpForm = () => {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-foreground/90">Email</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-primary" />
                 <Input
                   id="email"
                   type="email"
@@ -149,9 +156,9 @@ const SignUpForm = () => {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-foreground/90">Password</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-primary" />
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -181,7 +188,7 @@ const SignUpForm = () => {
             </div>
             <div className="flex items-center space-x-2">
               <Checkbox id="terms" required />
-              <Label htmlFor="terms" className="text-sm font-normal">
+              <Label htmlFor="terms" className="text-sm font-normal text-foreground/90">
                 I agree to the{" "}
                 <Link to="/terms" className="text-primary hover:underline">
                   Terms of Service
@@ -192,7 +199,7 @@ const SignUpForm = () => {
                 </Link>
               </Label>
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full premium-button" disabled={isLoading}>
               {isLoading ? "Creating account..." : "Create account"}
             </Button>
           </form>
@@ -209,7 +216,7 @@ const SignUpForm = () => {
               type="button" 
               onClick={handleGoogleSignUp}
               disabled={isLoading}
-              className="w-full bg-white hover:bg-gray-50 text-gray-800 border-gray-300"
+              className="w-full border-primary/20 bg-background hover:bg-primary/5 hover:border-primary/50 transition-all duration-300"
             >
               <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                 <path
@@ -234,9 +241,9 @@ const SignUpForm = () => {
           </div>
         </CardContent>
         <CardFooter>
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="text-center text-sm text-muted-foreground w-full">
             Already have an account?{" "}
-            <Link to="/signin" className="text-primary hover:underline">
+            <Link to="/signin" className="text-primary hover:underline font-medium">
               Sign in
             </Link>
           </p>
@@ -244,9 +251,9 @@ const SignUpForm = () => {
       </Card>
 
       <Dialog open={setupDialogOpen} onOpenChange={setSetupDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md glass-effect">
           <DialogHeader>
-            <DialogTitle>{providerName} Login Not Configured</DialogTitle>
+            <DialogTitle className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{providerName} Login Not Configured</DialogTitle>
             <DialogDescription className="space-y-3 pt-4">
               <p>
                 The {providerName} login provider is not enabled in your Supabase project. You need to configure the provider in the Supabase dashboard.
@@ -269,6 +276,7 @@ const SignUpForm = () => {
               type="button"
               variant="secondary"
               onClick={() => setSetupDialogOpen(false)}
+              className="glow-border"
             >
               Close
             </Button>

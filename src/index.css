@@ -92,11 +92,49 @@
 
   body {
     @apply bg-background text-foreground;
+    cursor: none;
   }
 }
 
 @layer components {
   .gradient-heading {
     @apply bg-gradient-to-r from-esg-green-600 to-esg-blue-600 bg-clip-text text-transparent;
+  }
+  
+  /* Premium component styles */
+  .premium-card {
+    @apply rounded-xl border border-primary/20 bg-card/80 shadow-premium backdrop-blur-sm transition-all duration-300;
+  }
+  
+  .premium-card:hover {
+    @apply shadow-glow border-primary/40;
+  }
+  
+  .premium-button {
+    @apply bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-md hover:shadow-glow transition-all duration-300;
+  }
+  
+  .premium-input {
+    @apply border-primary/20 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:shadow-glow transition-all duration-300;
+  }
+  
+  .glow-border {
+    @apply border border-primary/30 shadow-glow;
+  }
+  
+  .glow-border-blue {
+    @apply border border-accent/30 shadow-glow-blue;
+  }
+  
+  .glow-border-amber {
+    @apply border border-esg-amber-500/30 shadow-glow-amber;
+  }
+  
+  .glass-effect {
+    @apply bg-background/70 backdrop-blur-md border border-white/10;
+  }
+  
+  .animated-gradient {
+    @apply bg-gradient-to-r bg-[length:200%_auto] animate-gradient-flow;
   }
 }

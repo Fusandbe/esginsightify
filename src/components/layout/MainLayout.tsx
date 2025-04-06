@@ -7,15 +7,23 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Sparkles } from "lucide-react";
+import { CursorEffect } from "@/components/ui/cursor-effect";
 
 const MainLayout = () => {
   return (
     <ThemeProvider defaultTheme="light" storageKey="esg-theme">
       <div className="flex min-h-screen flex-col relative overflow-hidden">
+        {/* Custom cursor effect */}
+        <CursorEffect />
+        
         {/* Premium background decorations */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/5 rounded-full translate-y-1/3 -translate-x-1/4 blur-3xl pointer-events-none"></div>
-        <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-esg-green-500/5 rounded-full -translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none animate-pulse"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl pointer-events-none animate-pulse-slow"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/5 rounded-full translate-y-1/3 -translate-x-1/4 blur-3xl pointer-events-none animate-pulse-slow"></div>
+        <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-esg-green-500/5 rounded-full -translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none animate-pulse-slow"></div>
+        
+        {/* Additional premium decorations */}
+        <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-esg-amber-500/5 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+        <div className="absolute bottom-1/4 right-1/3 w-56 h-56 bg-esg-blue-500/5 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
         
         <Navbar />
         <main className="flex-1 relative z-10">
@@ -30,7 +38,7 @@ const MainLayout = () => {
               <Button 
                 variant="outline" 
                 size="icon" 
-                className="rounded-full h-10 w-10 shadow-lg border border-primary/20 backdrop-blur-xl bg-background/80 hover:bg-primary/10 transition-all duration-300"
+                className="rounded-full h-10 w-10 shadow-lg border border-primary/20 backdrop-blur-xl bg-background/80 hover:bg-primary/10 transition-all duration-300 hover:shadow-glow"
               >
                 <ThemeToggle variant="toggle" />
               </Button>
