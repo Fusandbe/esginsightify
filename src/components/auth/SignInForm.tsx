@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, AlertCircle } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -16,8 +16,10 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogFooter
+  DialogFooter,
+  DialogClose
 } from "@/components/ui/dialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
@@ -28,6 +30,7 @@ const SignInForm = () => {
   const [setupDialogOpen, setSetupDialogOpen] = useState(false);
   const [providerName, setProviderName] = useState<string>("");
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [configError, setConfigError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,10 +40,15 @@ const SignInForm = () => {
   const handleGoogleSignIn = async () => {
     try {
       setIsGoogleLoading(true);
+      setConfigError(null);
+      
+      const redirectTo = `${window.location.origin}/dashboard`;
+      console.log("Redirecting to:", redirectTo);
+      
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: redirectTo
         }
       });
       
@@ -52,6 +60,7 @@ const SignInForm = () => {
           setProviderName('Google');
           setSetupDialogOpen(true);
         } else {
+          setConfigError(`${error.message}`);
           toast({
             title: `Google Sign In Failed`,
             description: error.message,
@@ -60,9 +69,10 @@ const SignInForm = () => {
         }
       }
       // No need to set isGoogleLoading to false on success as we're redirecting
-    } catch (error) {
+    } catch (error: any) {
       setIsGoogleLoading(false);
       console.error(`Unexpected error during Google sign in:`, error);
+      setConfigError(`${error.message || "Unknown error occurred"}`);
       toast({
         title: "Authentication Error",
         description: "An unexpected error occurred. Please try again later.",
@@ -81,6 +91,16 @@ const SignInForm = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {configError && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Authentication Error</AlertTitle>
+              <AlertDescription>
+                {configError}
+              </AlertDescription>
+            </Alert>
+          )}
+        
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -176,7 +196,7 @@ const SignInForm = () => {
           </div>
         </CardContent>
         <CardFooter>
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="text-center text-sm text-muted-foreground w-full">
             Don't have an account?{" "}
             <Link to="/signup" className="text-primary hover:underline">
               Sign up
@@ -197,22 +217,40 @@ const SignInForm = () => {
               <ol className="list-decimal pl-5 space-y-2">
                 <li>Go to the Supabase dashboard</li>
                 <li>Navigate to Authentication &gt; Providers</li>
-                <li>Enable and configure the {providerName} provider</li>
+                <li>Enable and configure the {providerName} provider with OAuth credentials from Google Cloud Console</li>
                 <li>Make sure to add the correct redirect URL: <code className="bg-muted p-1 rounded text-xs">{window.location.origin}/dashboard</code></li>
+                <li>In Google Cloud Console, add both <code className="bg-muted p-1 rounded text-xs">{window.location.origin}</code> as an authorized JavaScript origin</li>
+                <li>In Google Cloud Console, add <code className="bg-muted p-1 rounded text-xs">https://tpmgctkizfvcxdaqptfh.supabase.co/auth/v1/callback</code> as an authorized redirect URI</li>
                 <li>Set your site URL in the Authentication settings to: <code className="bg-muted p-1 rounded text-xs">{window.location.origin}</code></li>
               </ol>
-              <p className="mt-4 text-sm text-muted-foreground">
-                In the meantime, you can sign in with email and password.
-              </p>
+              <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-md">
+                <p className="text-sm text-amber-800 dark:text-amber-300 font-medium">Common issues:</p>
+                <ul className="list-disc pl-5 mt-1 text-sm text-amber-700 dark:text-amber-400">
+                  <li>403 errors occur when redirect URIs or JavaScript origins don't match</li>
+                  <li>Make sure to add both your app URL and the Supabase callback URL to Google OAuth settings</li>
+                  <li>Check that your OAuth credentials are correctly copied to Supabase</li>
+                </ul>
+              </div>
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter className="sm:justify-start">
+          <DialogFooter className="flex justify-between sm:justify-between">
+            <DialogClose asChild>
+              <Button
+                type="button"
+                variant="secondary"
+              >
+                Close
+              </Button>
+            </DialogClose>
             <Button
               type="button"
-              variant="secondary"
-              onClick={() => setSetupDialogOpen(false)}
+              variant="outline" 
+              className="bg-primary/5"
+              onClick={() => {
+                window.open('https://console.cloud.google.com/apis/credentials', '_blank');
+              }}
             >
-              Close
+              Open Google Console
             </Button>
           </DialogFooter>
         </DialogContent>
