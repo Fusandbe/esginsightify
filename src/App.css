@@ -54,6 +54,11 @@
   transform: translateY(-2px);
 }
 
+/* Button hover effects - premium styles */
+button:hover {
+  transition: all 0.3s ease;
+}
+
 /* Subtle border glow animation */
 @keyframes border-glow {
   0%, 100% {
