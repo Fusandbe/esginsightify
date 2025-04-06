@@ -11,7 +11,7 @@ export function CursorEffect() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHoveringButton, setIsHoveringButton] = useState(false);
   const [currentButtonEl, setCurrentButtonEl] = useState<HTMLElement | null>(null);
-  const { theme } = useTheme();
+  const { theme, colorTheme } = useTheme();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -61,13 +61,13 @@ export function CursorEffect() {
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
+      document.addEventListener('mouseleave', handleMouseLeave);
     };
   }, [isHoveringButton, currentButtonEl]);
 
   if (typeof window === 'undefined') return null;
 
-  // Determine cursor color based on theme
+  // Determine cursor color and style based on theme and color theme
   const cursorColor = theme === "dark" ? "border-white" : "border-gray-800";
   const dotColor = theme === "dark" ? "bg-white" : "bg-gray-800";
 

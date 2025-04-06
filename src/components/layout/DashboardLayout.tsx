@@ -1,4 +1,3 @@
-
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -25,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { ThemeColorPicker } from "@/components/ui/theme-color-picker";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -70,9 +70,8 @@ const DashboardLayout = () => {
   const closeSidebar = () => setSidebarOpen(false);
 
   return (
-    <ThemeProvider defaultTheme="light" storageKey="esg-theme">
+    <ThemeProvider defaultTheme="light" defaultColorTheme="default" storageKey="esg-theme">
       <div className="flex min-h-screen">
-        {/* Mobile sidebar backdrop */}
         {sidebarOpen && (
           <div
             className="fixed inset-0 z-20 bg-background/80 backdrop-blur-md md:hidden"
@@ -80,7 +79,6 @@ const DashboardLayout = () => {
           />
         )}
 
-        {/* Sidebar */}
         <aside
           className={cn(
             "fixed inset-y-0 left-0 z-30 w-72 transform border-r border-sidebar-border bg-sidebar transition-transform md:translate-x-0 md:static md:z-0",
@@ -187,9 +185,7 @@ const DashboardLayout = () => {
           </div>
         </aside>
 
-        {/* Main content */}
         <div className="flex flex-1 flex-col">
-          {/* Header */}
           <header className="sticky top-0 z-10 border-b bg-background/90 backdrop-blur-md">
             <div className="flex h-16 items-center justify-between px-6">
               <Button
@@ -253,15 +249,15 @@ const DashboardLayout = () => {
             </div>
           </header>
 
-          {/* Page content */}
           <main className="flex-1 p-6 md:p-8 relative overflow-hidden">
-            {/* Premium background decorations */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/3 rounded-full translate-x-1/3 -translate-y-1/2 blur-3xl pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/3 rounded-full -translate-x-1/4 translate-y-1/3 blur-3xl pointer-events-none"></div>
             
             <Outlet />
           </main>
         </div>
+        
+        <ThemeColorPicker />
       </div>
     </ThemeProvider>
   );

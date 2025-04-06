@@ -6,12 +6,13 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { ThemeColorPicker } from "@/components/ui/theme-color-picker";
 import { Sparkles } from "lucide-react";
 import { CursorEffect } from "@/components/ui/cursor-effect";
 
 const MainLayout = () => {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="esg-theme">
+    <ThemeProvider defaultTheme="light" defaultColorTheme="default" storageKey="esg-theme">
       <div className="flex min-h-screen flex-col relative overflow-hidden">
         {/* Custom cursor effect */}
         <CursorEffect />
@@ -55,6 +56,9 @@ const MainLayout = () => {
             </SheetContent>
           </Sheet>
         </div>
+        
+        {/* Theme Color Picker */}
+        <ThemeColorPicker />
       </div>
     </ThemeProvider>
   );
