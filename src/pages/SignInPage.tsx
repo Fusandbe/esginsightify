@@ -14,6 +14,18 @@ const SignInPage = () => {
           </p>
         </div>
         <SignInForm />
+        <div className="text-center mt-8">
+          <p className="text-sm text-muted-foreground">
+            Need help setting up Google login?
+            <a 
+              href="https://console.cloud.google.com/apis/credentials" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="text-primary hover:underline ml-1">
+              Open Google Console
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

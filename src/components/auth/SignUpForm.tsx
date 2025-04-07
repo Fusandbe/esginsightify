@@ -34,6 +34,7 @@ const SignUpForm = () => {
   const [setupDialogOpen, setSetupDialogOpen] = useState(false);
   const [providerName, setProviderName] = useState<string>("");
   const [configError, setConfigError] = useState<string | null>(null);
+  const [errorDetails, setErrorDetails] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,6 +78,7 @@ const SignUpForm = () => {
     try {
       setProviderName('Google');
       setConfigError(null);
+      setErrorDetails(null);
       setIsLoading(true);
       
       const redirectTo = `${window.location.origin}/dashboard`;
@@ -94,6 +96,11 @@ const SignUpForm = () => {
         setIsLoading(false);
         
         if (error.message.includes('provider is not enabled')) {
+          setSetupDialogOpen(true);
+        } else if (error.message.includes('403')) {
+          // Handle 403 error specifically
+          setConfigError("403 Forbidden Error");
+          setErrorDetails("Your Google OAuth configuration has URI mismatch issues");
           setSetupDialogOpen(true);
         } else {
           setConfigError(`${error.message}`);
@@ -277,27 +284,47 @@ const SignUpForm = () => {
       <Dialog open={setupDialogOpen} onOpenChange={setSetupDialogOpen}>
         <DialogContent className="sm:max-w-md glass-effect">
           <DialogHeader>
-            <DialogTitle className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{providerName} Login Not Configured</DialogTitle>
+            <DialogTitle className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{configError || `${providerName} Login Not Configured`}</DialogTitle>
             <DialogDescription className="space-y-3 pt-4">
+              {errorDetails && (
+                <Alert variant="destructive" className="mb-4">
+                  <AlertDescription>
+                    {errorDetails}
+                  </AlertDescription>
+                </Alert>
+              )}
               <p>
-                The {providerName} login provider is not enabled in your Supabase project. You need to configure the provider in the Supabase dashboard.
+                You need to configure the {providerName} OAuth provider correctly in both Supabase and Google Cloud Console.
               </p>
-              <p className="font-medium">Steps to configure {providerName}:</p>
+              <p className="font-medium">Complete configuration steps:</p>
               <ol className="list-decimal pl-5 space-y-2">
-                <li>Go to the Supabase dashboard</li>
-                <li>Navigate to Authentication &gt; Providers</li>
-                <li>Enable and configure the {providerName} provider with OAuth credentials from Google Cloud Console</li>
-                <li>Make sure to add the correct redirect URL: <code className="bg-muted p-1 rounded text-xs">{window.location.origin}/dashboard</code></li>
-                <li>In Google Cloud Console, add both <code className="bg-muted p-1 rounded text-xs">{window.location.origin}</code> as an authorized JavaScript origin</li>
-                <li>In Google Cloud Console, add <code className="bg-muted p-1 rounded text-xs">https://tpmgctkizfvcxdaqptfh.supabase.co/auth/v1/callback</code> as an authorized redirect URI</li>
-                <li>Set your site URL in the Authentication settings to: <code className="bg-muted p-1 rounded text-xs">{window.location.origin}</code></li>
+                <li>Go to the Supabase dashboard Authentication &gt; Providers</li>
+                <li>Ensure the Google provider is enabled with your OAuth credentials</li>
+                <li>Go to Google Cloud Console &gt; APIs &amp; Services &gt; Credentials</li>
+                <li>Edit your OAuth 2.0 Client ID</li>
+                <li><strong>Add both of these URLs as Authorized JavaScript origins:</strong>
+                  <ul className="list-disc pl-5 mt-1 space-y-1">
+                    <li><code className="bg-muted p-1 rounded text-xs">{window.location.origin}</code></li>
+                    <li><code className="bg-muted p-1 rounded text-xs">https://tpmgctkizfvcxdaqptfh.supabase.co</code></li>
+                  </ul>
+                </li>
+                <li><strong>Add both of these URLs as Authorized redirect URIs:</strong>
+                  <ul className="list-disc pl-5 mt-1 space-y-1">
+                    <li><code className="bg-muted p-1 rounded text-xs">{window.location.origin}/dashboard</code></li>
+                    <li><code className="bg-muted p-1 rounded text-xs">https://tpmgctkizfvcxdaqptfh.supabase.co/auth/v1/callback</code></li>
+                  </ul>
+                </li>
+                <li>In Supabase Authentication settings, set your site URL to: <code className="bg-muted p-1 rounded text-xs">{window.location.origin}</code></li>
+                <li>Wait a few minutes for changes to propagate after saving</li>
               </ol>
               <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-md">
-                <p className="text-sm text-amber-800 dark:text-amber-300 font-medium">Common issues:</p>
+                <p className="text-sm text-amber-800 dark:text-amber-300 font-medium">Fixing 403 errors:</p>
                 <ul className="list-disc pl-5 mt-1 text-sm text-amber-700 dark:text-amber-400">
-                  <li>403 errors occur when redirect URIs or JavaScript origins don't match</li>
-                  <li>Make sure to add both your app URL and the Supabase callback URL to Google OAuth settings</li>
-                  <li>Check that your OAuth credentials are correctly copied to Supabase</li>
+                  <li>403 errors occur when the redirect URI or JavaScript origin doesn't match exactly</li>
+                  <li>Make sure to add <strong>both</strong> your app URL and the Supabase callback URL</li>
+                  <li>There must be <strong>no trailing slash</strong> in JavaScript origins</li>
+                  <li>Check for typos and exact matches in all URLs</li>
+                  <li>Remember that changes can take up to 5-10 minutes to propagate</li>
                 </ul>
               </div>
             </DialogDescription>
