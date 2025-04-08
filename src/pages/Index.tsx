@@ -5,13 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   useEffect(() => {
-    // Check for auth session in URL on initial page load
-    // This helps with OAuth redirects to ensure they're properly handled
+    // More efficient session check that doesn't block rendering
     const checkForSession = async () => {
-      const { error } = await supabase.auth.getSession();
-      if (error) {
-        console.error("Error checking session:", error);
-      }
+      await supabase.auth.getSession();
     };
 
     checkForSession();

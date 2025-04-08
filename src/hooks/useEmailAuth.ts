@@ -24,6 +24,7 @@ export const useSignIn = () => {
         return;
       }
       
+      // Directly call signIn without extra checks
       await signIn(email, password);
       // Note: Navigation and toast are handled in the AuthProvider's signIn method
     } catch (error: any) {

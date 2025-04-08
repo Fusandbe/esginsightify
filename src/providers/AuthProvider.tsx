@@ -78,12 +78,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setIsLoading(true);
       
-      const { data: userExists, error: checkError } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('id', email)
-        .maybeSingle();
-        
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -91,21 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error) {
         console.error("Sign in error details:", error);
-        
-        if (error.message.includes("Invalid login credentials")) {
-          toast({
-            title: "Authentication failed",
-            description: "The email or password you entered is incorrect.",
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Authentication failed",
-            description: error.message,
-            variant: "destructive",
-          });
-        }
-        return;
+        throw error;
       }
 
       toast({
@@ -114,12 +94,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
       navigate("/dashboard");
     } catch (error: any) {
-      console.error("Unexpected authentication error:", error);
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      });
+      console.error("Authentication error:", error);
+      throw error;
     } finally {
       setIsLoading(false);
     }
