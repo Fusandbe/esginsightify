@@ -1,21 +1,12 @@
-import { createContext, useContext, useEffect, useState } from "react";
+
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-
-type AuthContextType = {
-  session: Session | null;
-  user: User | null;
-  profile: any | null;
-  isLoading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, metadata: { first_name: string; last_name: string }) => Promise<void>;
-  signOut: () => Promise<void>;
-  resetPassword: (email: string) => Promise<void>;
-};
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext } from "@/contexts/AuthContext";
+import { fetchUserProfile } from "@/utils/profileUtils";
+import { signInWithEmail, signUpWithEmail, sendPasswordResetEmail } from "@/utils/authUtils";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
@@ -32,7 +23,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(currentSession?.user ?? null);
         
         if (currentSession?.user?.id) {
-          setTimeout(() => fetchUserProfile(currentSession.user.id), 0);
+          setTimeout(() => {
+            fetchUserProfile(currentSession.user.id).then(profileData => {
+              setProfile(profileData);
+            });
+          }, 0);
         } else {
           setProfile(null);
         }
@@ -44,7 +39,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(currentSession?.user ?? null);
       
       if (currentSession?.user?.id) {
-        fetchUserProfile(currentSession.user.id);
+        fetchUserProfile(currentSession.user.id).then(profileData => {
+          setProfile(profileData);
+        });
       }
       
       setIsLoading(false);
@@ -55,50 +52,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  async function fetchUserProfile(userId: string) {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error) {
-        console.error('Error fetching user profile:', error);
-        return;
-      }
-
-      setProfile(data);
-    } catch (error) {
-      console.error('Error in profile fetch:', error);
-    }
-  }
-
   const signIn = async (email: string, password: string) => {
-    try {
-      setIsLoading(true);
-      
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        console.error("Sign in error details:", error);
-        throw error;
-      }
-
-      toast({
-        title: "Success",
-        description: "You have successfully logged in.",
-      });
-      navigate("/dashboard");
-    } catch (error: any) {
-      console.error("Authentication error:", error);
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
+    return signInWithEmail(email, password, {
+      showToast: toast,
+      navigate,
+      setIsLoading
+    });
   };
 
   const signUp = async (
@@ -106,39 +65,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     password: string, 
     metadata: { first_name: string; last_name: string }
   ) => {
-    try {
-      setIsLoading(true);
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: metadata
-        }
-      });
-
-      if (error) {
-        toast({
-          title: "Sign up failed",
-          description: error.message,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      toast({
-        title: "Account created",
-        description: "Please check your email to confirm your account.",
-      });
-      navigate("/signin");
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    return signUpWithEmail(email, password, metadata, {
+      showToast: toast,
+      navigate,
+      setIsLoading
+    });
   };
 
   const signOut = async () => {
@@ -162,31 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const resetPassword = async (email: string) => {
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
-      });
-
-      if (error) {
-        toast({
-          title: "Password reset failed",
-          description: error.message,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      toast({
-        title: "Password reset email sent",
-        description: "Check your email for the password reset link.",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      });
-    }
+    return sendPasswordResetEmail(email, { showToast: toast });
   };
 
   const value = {
@@ -203,10 +110,4 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
+export { useAuth } from "@/hooks/useAuth";
