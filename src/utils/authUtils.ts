@@ -1,12 +1,11 @@
-
 import { supabase } from "@/integrations/supabase/client";
-import { ToastProps } from "@/hooks/use-toast";
+import type { Toast } from "@/hooks/use-toast";
 
 export async function signInWithEmail(
   email: string, 
   password: string, 
   options: { 
-    showToast: (props: ToastProps) => void,
+    showToast: (props: Toast) => void,
     navigate: (path: string) => void,
     setIsLoading: (value: boolean) => void,
   }
@@ -44,7 +43,7 @@ export async function signUpWithEmail(
   password: string,
   metadata: { first_name: string; last_name: string },
   options: { 
-    showToast: (props: ToastProps) => void,
+    showToast: (props: Toast) => void,
     navigate: (path: string) => void,
     setIsLoading: (value: boolean) => void,
   }
@@ -89,7 +88,7 @@ export async function signUpWithEmail(
 export async function sendPasswordResetEmail(
   email: string,
   options: { 
-    showToast: (props: ToastProps) => void
+    showToast: (props: Toast) => void
   }
 ) {
   const { showToast } = options;
