@@ -5,8 +5,14 @@ import type {
   ToastProps,
 } from "@/components/ui/toast"
 
-// Re-export the Toast type
-export type Toast = ToastProps;
+// Define our Toast interface to ensure compatibility
+export interface Toast {
+  title?: React.ReactNode
+  description?: React.ReactNode
+  action?: ToastActionElement
+  variant?: "default" | "destructive"
+  duration?: number
+}
 
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
@@ -139,8 +145,6 @@ function dispatch(action: Action) {
     listener(memoryState)
   })
 }
-
-type Toast = Omit<ToasterToast, "id">
 
 function toast({ ...props }: Toast) {
   const id = genId()

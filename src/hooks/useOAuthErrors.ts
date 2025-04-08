@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast, type Toast } from "@/hooks/use-toast";
 
 export const useOAuthErrors = () => {
   const [setupDialogOpen, setSetupDialogOpen] = useState(false);
