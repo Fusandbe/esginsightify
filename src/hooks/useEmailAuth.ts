@@ -13,15 +13,42 @@ export const useSignIn = () => {
   const handleSignIn = async (email: string, password: string) => {
     try {
       setIsLoading(true);
+      
+      // Basic form validation
+      if (!email || !password) {
+        toast({
+          title: "Missing information",
+          description: "Please provide both email and password.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
       await signIn(email, password);
       // Note: Navigation and toast are handled in the AuthProvider's signIn method
     } catch (error: any) {
       console.error("Sign in error:", error);
-      toast({
-        title: "Authentication Error",
-        description: error.message || "An unexpected error occurred during sign in.",
-        variant: "destructive",
-      });
+      
+      // Provide more specific error messages based on the error
+      if (error.message?.includes("Invalid login credentials")) {
+        toast({
+          title: "Authentication Failed",
+          description: "The email or password you entered is incorrect. Please try again or reset your password.",
+          variant: "destructive",
+        });
+      } else if (error.message?.includes("Email not confirmed")) {
+        toast({
+          title: "Email Not Verified",
+          description: "Please check your email and follow the verification link before signing in.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Authentication Error",
+          description: error.message || "An unexpected error occurred during sign in.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
     }

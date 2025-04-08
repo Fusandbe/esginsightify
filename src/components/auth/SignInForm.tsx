@@ -6,12 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Eye, EyeOff, Mail, Lock, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, AlertCircle, HelpCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import GoogleAuthButton from "@/components/auth/GoogleAuthButton";
 import OAuthSetupDialog from "@/components/auth/OAuthSetupDialog";
 import { useSignIn } from "@/hooks/useEmailAuth";
 import useOAuthErrors from "@/hooks/useOAuthErrors";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
@@ -65,6 +66,7 @@ const SignInForm = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
                   required
+                  autoComplete="email"
                 />
               </div>
             </div>
@@ -85,6 +87,7 @@ const SignInForm = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10"
                   required
+                  autoComplete="current-password"
                 />
                 <Button
                   type="button"
@@ -101,6 +104,21 @@ const SignInForm = () => {
                 </Button>
               </div>
             </div>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center text-xs text-muted-foreground cursor-help">
+                    <HelpCircle className="h-3 w-3 mr-1" />
+                    Having trouble signing in?
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Make sure your email is verified and your password is correct.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>

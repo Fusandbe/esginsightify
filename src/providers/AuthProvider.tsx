@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Session, User } from "@supabase/supabase-js";
@@ -27,13 +26,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Set up the auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         
-        // Fetch user profile after auth state changes
         if (currentSession?.user?.id) {
           setTimeout(() => fetchUserProfile(currentSession.user.id), 0);
         } else {
@@ -42,7 +39,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     );
 
-    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
@@ -81,17 +77,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = async (email: string, password: string) => {
     try {
       setIsLoading(true);
+      
+      const { data: userExists, error: checkError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', email)
+        .maybeSingle();
+        
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
-        toast({
-          title: "Authentication failed",
-          description: error.message,
-          variant: "destructive",
-        });
+        console.error("Sign in error details:", error);
+        
+        if (error.message.includes("Invalid login credentials")) {
+          toast({
+            title: "Authentication failed",
+            description: "The email or password you entered is incorrect.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Authentication failed",
+            description: error.message,
+            variant: "destructive",
+          });
+        }
         return;
       }
 
@@ -100,7 +113,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: "You have successfully logged in.",
       });
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Unexpected authentication error:", error);
       toast({
         title: "Error",
         description: "An unexpected error occurred. Please try again.",
