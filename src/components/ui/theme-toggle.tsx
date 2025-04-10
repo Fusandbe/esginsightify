@@ -33,9 +33,9 @@ export function ThemeToggle({ variant = "button" }: { variant?: "button" | "togg
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
+          variant="luxury"
           size="icon"
-          className="focus-visible:ring-primary/30 relative overflow-hidden group rounded-full w-9 h-9 bg-gradient-to-br from-background to-muted/50 hover:from-muted/70 hover:to-background border border-primary/10"
+          className="focus-visible:ring-primary/30 relative overflow-hidden group rounded-full w-9 h-9 border border-primary/20 hover:border-primary/40"
           aria-label="Toggle theme"
         >
           <Sun className="h-[18px] w-[18px] transition-all duration-500 rotate-0 scale-100 dark:-rotate-90 dark:scale-0 text-primary" />
@@ -43,16 +43,16 @@ export function ThemeToggle({ variant = "button" }: { variant?: "button" | "togg
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="backdrop-blur-xl bg-background/95 border-primary/10 shadow-xl rounded-xl">
-        <DropdownMenuItem onClick={() => setTheme("light")} className="gap-2 cursor-pointer focus:bg-accent/20">
-          <Sun className="h-4 w-4 text-esg-amber-500" />
+      <DropdownMenuContent align="end" className="backdrop-blur-xl bg-background/95 border-primary/10 shadow-luxury rounded-xl">
+        <DropdownMenuItem onClick={() => setTheme("light")} className="gap-2 cursor-pointer focus:bg-accent/5">
+          <Sun className="h-4 w-4 text-esg-gold-500" />
           <span>Light</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")} className="gap-2 cursor-pointer focus:bg-accent/20">
+        <DropdownMenuItem onClick={() => setTheme("dark")} className="gap-2 cursor-pointer focus:bg-accent/5">
           <Moon className="h-4 w-4 text-primary" />
           <span>Dark</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")} className="gap-2 cursor-pointer focus:bg-accent/20">
+        <DropdownMenuItem onClick={() => setTheme("system")} className="gap-2 cursor-pointer focus:bg-accent/5">
           <LaptopIcon className="h-4 w-4 text-esg-blue-500" />
           <span>System</span>
         </DropdownMenuItem>

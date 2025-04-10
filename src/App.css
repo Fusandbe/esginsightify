@@ -6,22 +6,22 @@
   text-align: center;
 }
 
-/* Premium Logo Effects */
+/* Luxury Logo Effects */
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
-  filter: drop-shadow(0 0 1em rgba(100, 108, 255, 0.2));
+  filter: drop-shadow(0 0 1em rgba(44, 60, 115, 0.2));
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em rgba(100, 108, 255, 0.67));
+  filter: drop-shadow(0 0 2em rgba(44, 60, 115, 0.67));
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em rgba(97, 218, 251, 0.67));
+  filter: drop-shadow(0 0 2em rgba(220, 185, 26, 0.67));
 }
 
-/* Premium animations */
+/* Luxury animations */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -37,7 +37,7 @@
   }
 }
 
-/* Premium Card Effect */
+/* Luxury Card Effect */
 .card {
   padding: 2em;
   background-color: rgba(255, 255, 255, 0.03);
@@ -49,12 +49,12 @@
 }
 
 .card:hover {
-  box-shadow: 0 8px 40px rgba(22, 163, 74, 0.15);
-  border-color: rgba(22, 163, 74, 0.3);
+  box-shadow: 0 8px 40px rgba(44, 60, 115, 0.15);
+  border-color: rgba(44, 60, 115, 0.3);
   transform: translateY(-2px);
 }
 
-/* Button hover effects - premium styles */
+/* Button hover effects - luxury styles */
 button:hover {
   transition: all 0.3s ease;
 }
@@ -62,12 +62,12 @@ button:hover {
 /* Subtle border glow animation */
 @keyframes border-glow {
   0%, 100% {
-    border-color: rgba(22, 163, 74, 0.3);
-    box-shadow: 0 0 15px rgba(22, 163, 74, 0.2);
+    border-color: rgba(44, 60, 115, 0.3);
+    box-shadow: 0 0 15px rgba(44, 60, 115, 0.2);
   }
   50% {
-    border-color: rgba(22, 163, 74, 0.6);
-    box-shadow: 0 0 20px rgba(22, 163, 74, 0.4);
+    border-color: rgba(44, 60, 115, 0.6);
+    box-shadow: 0 0 20px rgba(44, 60, 115, 0.4);
   }
 }
 
@@ -88,6 +88,57 @@ button:hover {
 }
 
 .read-the-docs:hover {
-  background-color: rgba(22, 163, 74, 0.05);
-  border-color: rgba(22, 163, 74, 0.2);
+  background-color: rgba(44, 60, 115, 0.05);
+  border-color: rgba(44, 60, 115, 0.2);
+}
+
+/* Luxury French elements */
+.serif-display {
+  font-family: 'Playfair Display', serif;
+}
+
+.gold-accent {
+  color: #ebc022;
+}
+
+.luxury-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(44, 60, 115, 0.3), transparent);
+  margin: 2rem 0;
+}
+
+.luxury-shadow {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.french-accent-border {
+  border-left: 3px solid #ebc022;
+  padding-left: 1rem;
+}
+
+.luxury-quote {
+  font-style: italic;
+  position: relative;
+  padding: 1rem 2rem;
+}
+
+.luxury-quote::before,
+.luxury-quote::after {
+  content: """;
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  position: absolute;
+  opacity: 0.2;
+  color: #ebc022;
+}
+
+.luxury-quote::before {
+  top: -1rem;
+  left: -0.5rem;
+}
+
+.luxury-quote::after {
+  content: """;
+  bottom: -2.5rem;
+  right: -0.5rem;
 }

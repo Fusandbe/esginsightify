@@ -13,16 +13,16 @@ type ColorOption = {
 
 const colorOptions: ColorOption[] = [
   {
-    name: "Default",
+    name: "Navy",
     value: "default",
-    color: "bg-[#16a34a]",
-    description: "Classic green accent"
+    color: "bg-[#1a3a73]",
+    description: "Classic navy accent"
   },
   {
-    name: "Purple",
+    name: "Violet",
     value: "purple",
     color: "bg-[#7c3aed]",
-    description: "Rich purple accent"
+    description: "Rich violet accent"
   },
   {
     name: "Charcoal",
@@ -31,10 +31,10 @@ const colorOptions: ColorOption[] = [
     description: "Deep charcoal accent"
   },
   {
-    name: "Navy",
+    name: "Sapphire",
     value: "navy",
     color: "bg-[#1e40af]",
-    description: "Bold navy accent"
+    description: "Bold sapphire accent"
   },
   {
     name: "Emerald",
@@ -43,10 +43,10 @@ const colorOptions: ColorOption[] = [
     description: "Vibrant emerald accent"
   },
   {
-    name: "Ruby",
+    name: "Burgundy",
     value: "ruby",
-    color: "bg-[#b91c1c]",
-    description: "Elegant ruby accent"
+    color: "bg-[#9f1239]",
+    description: "Elegant burgundy accent"
   }
 ];
 
@@ -57,9 +57,9 @@ export function ThemeColorPicker() {
     <div className="fixed bottom-16 right-4 z-50">
       <div className="relative group">
         <Button 
-          variant="outline" 
+          variant="luxury" 
           size="icon" 
-          className="rounded-full h-10 w-10 shadow-lg border border-primary/20 backdrop-blur-xl bg-background/80 hover:bg-primary/10 transition-all duration-300 hover:shadow-glow"
+          className="rounded-full h-10 w-10 shadow-lg border border-primary/20 backdrop-blur-xl bg-background/80 hover:bg-primary/5 transition-all duration-300"
           aria-label="Change color theme"
         >
           <Palette className="h-4 w-4 text-primary" />
@@ -67,8 +67,8 @@ export function ThemeColorPicker() {
         
         {/* Color Picker Popup */}
         <div className="absolute bottom-full mb-2 right-0 origin-bottom-right scale-95 opacity-0 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300">
-          <div className="p-4 rounded-xl backdrop-blur-xl bg-background/90 border border-primary/10 shadow-xl min-w-48">
-            <div className="text-center mb-3 text-sm font-medium">Theme Colors</div>
+          <div className="p-4 rounded-xl backdrop-blur-xl bg-background/95 border border-primary/10 shadow-luxury min-w-48">
+            <div className="text-center mb-3 text-sm font-medium font-serif">Select Theme</div>
             <div className="grid grid-cols-2 gap-2">
               {colorOptions.map((option) => (
                 <button

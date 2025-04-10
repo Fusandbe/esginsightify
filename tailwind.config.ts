@@ -19,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'serif': ['Playfair Display', 'serif'],
+				'sans': ['Montserrat', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -113,13 +117,51 @@ export default {
 						800: '#991b1b',
 						900: '#7f1d1d',
 					},
+					// Adding French luxury colors
+					gold: {
+						50: '#fdf9e9',
+						100: '#fbf2d3',
+						200: '#f7e5a7',
+						300: '#f3d97a',
+						400: '#efcc4e',
+						500: '#ebc022',
+						600: '#bc9a1b',
+						700: '#8d7314',
+						800: '#5e4d0e',
+						900: '#2f2607',
+					},
+					navy: {
+						50: '#e9f0f7',
+						100: '#d3e1f0',
+						200: '#a7c3e0',
+						300: '#7aa6d1',
+						400: '#4e88c1',
+						500: '#226ab2',
+						600: '#1b558e',
+						700: '#14406b',
+						800: '#0e2b47',
+						900: '#071524',
+					},
+					burgundy: {
+						50: '#f7e9ee',
+						100: '#f0d3dd',
+						200: '#e0a7bc',
+						300: '#d17a9a',
+						400: '#c14e79',
+						500: '#b22257',
+						600: '#8e1b46',
+						700: '#6b1434',
+						800: '#470e23',
+						900: '#240711',
+					},
 				},
 			},
 			boxShadow: {
-				glow: '0 0 10px 2px rgba(34, 197, 94, 0.3), 0 0 20px rgba(34, 197, 94, 0.15), 0 0 30px rgba(34, 197, 94, 0.05)',
-				'glow-blue': '0 0 10px 2px rgba(37, 99, 235, 0.3), 0 0 20px rgba(37, 99, 235, 0.15), 0 0 30px rgba(37, 99, 235, 0.05)',
-				'glow-amber': '0 0 10px 2px rgba(245, 158, 11, 0.3), 0 0 20px rgba(245, 158, 11, 0.15), 0 0 30px rgba(245, 158, 11, 0.05)',
+				glow: '0 0 10px 2px rgba(44, 60, 115, 0.3), 0 0 20px rgba(44, 60, 115, 0.15), 0 0 30px rgba(44, 60, 115, 0.05)',
+				'glow-gold': '0 0 10px 2px rgba(220, 185, 26, 0.3), 0 0 20px rgba(220, 185, 26, 0.15), 0 0 30px rgba(220, 185, 26, 0.05)',
+				'glow-burgundy': '0 0 10px 2px rgba(178, 34, 87, 0.3), 0 0 20px rgba(178, 34, 87, 0.15), 0 0 30px rgba(178, 34, 87, 0.05)',
 				premium: '0px 2px 15px rgba(0, 0, 0, 0.05), 0px 15px 35px -5px rgba(0, 0, 0, 0.1)',
+				luxury: '0 8px 30px rgba(0, 0, 0, 0.12)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -140,14 +182,14 @@ export default {
 					'50%': { opacity: '0.4' }
 				},
 				'glow-pulse': {
-					'0%': { boxShadow: '0 0 10px 2px rgba(34, 197, 94, 0.3), 0 0 20px rgba(34, 197, 94, 0.15), 0 0 30px rgba(34, 197, 94, 0.05)' },
-					'50%': { boxShadow: '0 0 15px 5px rgba(34, 197, 94, 0.4), 0 0 30px rgba(34, 197, 94, 0.2), 0 0 40px rgba(34, 197, 94, 0.1)' },
-					'100%': { boxShadow: '0 0 10px 2px rgba(34, 197, 94, 0.3), 0 0 20px rgba(34, 197, 94, 0.15), 0 0 30px rgba(34, 197, 94, 0.05)' }
+					'0%': { boxShadow: '0 0 10px 2px rgba(44, 60, 115, 0.3), 0 0 20px rgba(44, 60, 115, 0.15), 0 0 30px rgba(44, 60, 115, 0.05)' },
+					'50%': { boxShadow: '0 0 15px 5px rgba(44, 60, 115, 0.4), 0 0 30px rgba(44, 60, 115, 0.2), 0 0 40px rgba(44, 60, 115, 0.1)' },
+					'100%': { boxShadow: '0 0 10px 2px rgba(44, 60, 115, 0.3), 0 0 20px rgba(44, 60, 115, 0.15), 0 0 30px rgba(44, 60, 115, 0.05)' }
 				},
-				'glow-pulse-blue': {
-					'0%': { boxShadow: '0 0 10px 2px rgba(37, 99, 235, 0.3), 0 0 20px rgba(37, 99, 235, 0.15), 0 0 30px rgba(37, 99, 235, 0.05)' },
-					'50%': { boxShadow: '0 0 15px 5px rgba(37, 99, 235, 0.4), 0 0 30px rgba(37, 99, 235, 0.2), 0 0 40px rgba(37, 99, 235, 0.1)' },
-					'100%': { boxShadow: '0 0 10px 2px rgba(37, 99, 235, 0.3), 0 0 20px rgba(37, 99, 235, 0.15), 0 0 30px rgba(37, 99, 235, 0.05)' }
+				'glow-pulse-gold': {
+					'0%': { boxShadow: '0 0 10px 2px rgba(220, 185, 26, 0.3), 0 0 20px rgba(220, 185, 26, 0.15), 0 0 30px rgba(220, 185, 26, 0.05)' },
+					'50%': { boxShadow: '0 0 15px 5px rgba(220, 185, 26, 0.4), 0 0 30px rgba(220, 185, 26, 0.2), 0 0 40px rgba(220, 185, 26, 0.1)' },
+					'100%': { boxShadow: '0 0 10px 2px rgba(220, 185, 26, 0.3), 0 0 20px rgba(220, 185, 26, 0.15), 0 0 30px rgba(220, 185, 26, 0.05)' }
 				},
 				'gradient-flow': {
 					'0%, 100%': { backgroundPosition: '0% 50%' },
@@ -159,7 +201,7 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'pulse-slow': 'pulse-slow 4s ease-in-out infinite',
 				'glow-pulse': 'glow-pulse 3s infinite ease-in-out',
-				'glow-pulse-blue': 'glow-pulse-blue 3s infinite ease-in-out',
+				'glow-pulse-gold': 'glow-pulse-gold 3s infinite ease-in-out',
 				'gradient-flow': 'gradient-flow 8s ease infinite'
 			}
 		}
