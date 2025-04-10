@@ -68,7 +68,7 @@ export function ThemeColorPicker() {
         {/* Color Picker Popup */}
         <div className="absolute bottom-full mb-2 right-0 origin-bottom-right scale-95 opacity-0 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300">
           <div className="p-4 rounded-xl backdrop-blur-xl bg-background/95 border border-primary/10 shadow-luxury min-w-48">
-            <div className="text-center mb-3 text-sm font-medium font-serif">Select Theme</div>
+            <div className="text-center mb-3 text-sm font-medium font-serif">Palette de Couleurs</div>
             <div className="grid grid-cols-2 gap-2">
               {colorOptions.map((option) => (
                 <button
@@ -84,7 +84,7 @@ export function ThemeColorPicker() {
                     "w-6 h-6 rounded-full mb-1",
                     option.color
                   )} />
-                  <span className="text-xs">{option.name}</span>
+                  <span className="text-xs font-serif">{option.name}</span>
                 </button>
               ))}
             </div>

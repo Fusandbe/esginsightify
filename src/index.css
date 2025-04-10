@@ -193,6 +193,18 @@
     @apply shadow-glow border-primary/40;
   }
   
+  .french-luxury-card {
+    @apply rounded-xl border-0 bg-card/95 shadow-luxury backdrop-blur-sm transition-all duration-300 relative before:absolute before:inset-0 before:rounded-xl before:p-[1px] before:bg-gradient-to-r before:from-primary/20 before:via-esg-gold-400/30 before:to-primary/20 before:-z-10 overflow-hidden;
+  }
+  
+  .french-luxury-card:hover {
+    @apply shadow-glow;
+  }
+  
+  .french-button {
+    @apply relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-primary/5 before:via-esg-gold-400/10 before:to-primary/5 hover:before:opacity-100 before:opacity-0 before:transition-opacity;
+  }
+  
   .luxury-button {
     @apply bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-md hover:shadow-glow transition-all duration-300;
   }
@@ -227,11 +239,48 @@
   }
   
   .french-border {
-    @apply border-2 border-primary/10 p-0.5;
-    background: linear-gradient(to right, var(--tw-gradient-stops)) border-box;
+    @apply relative overflow-hidden;
+    background: padding-box linear-gradient(to right, var(--tw-gradient-stops)) border-box;
     @apply from-primary/20 via-esg-gold-400/30 to-primary/20;
-    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  }
+  
+  .french-border::before {
+    content: '';
+    @apply absolute inset-0 border border-transparent rounded-md bg-gradient-to-r from-primary/20 via-esg-gold-400/30 to-primary/20 -z-10;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
+  }
+  
+  .french-divider {
+    height: 1px;
+    @apply my-10 bg-gradient-to-r from-transparent via-primary/20 to-transparent relative;
+  }
+  
+  .french-divider::before {
+    content: '';
+    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-esg-gold-400/50;
+  }
+  
+  .section-title {
+    @apply font-serif text-3xl font-medium relative inline-block;
+  }
+  
+  .section-title::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-1/3 h-px bg-gradient-to-r from-primary via-esg-gold-400 to-transparent;
+  }
+  
+  .elegant-list {
+    @apply space-y-3;
+  }
+  
+  .elegant-list-item {
+    @apply flex items-start gap-3;
+  }
+  
+  .elegant-list-item::before {
+    content: '●';
+    @apply text-esg-gold-500 text-xs;
   }
 }

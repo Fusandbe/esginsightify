@@ -17,14 +17,19 @@ const MainLayout = () => {
         {/* Custom cursor effect */}
         <CursorEffect />
         
-        {/* Premium background decorations */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl pointer-events-none animate-pulse-slow"></div>
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent/5 rounded-full translate-y-1/3 -translate-x-1/4 blur-3xl pointer-events-none animate-pulse-slow"></div>
-        <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-esg-green-500/5 rounded-full -translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none animate-pulse-slow"></div>
+        {/* Luxury background decorations */}
+        <div className="absolute top-0 right-0 w-[30rem] h-[30rem] bg-primary/3 rounded-full translate-x-1/3 -translate-y-1/2 blur-3xl pointer-events-none animate-pulse-slow"></div>
+        <div className="absolute bottom-0 left-0 w-[28rem] h-[28rem] bg-esg-gold-500/3 rounded-full translate-y-1/3 -translate-x-1/4 blur-3xl pointer-events-none animate-pulse-slow"></div>
+        <div className="absolute top-1/2 left-1/4 w-[24rem] h-[24rem] bg-esg-burgundy-500/3 rounded-full -translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none animate-pulse-slow"></div>
         
-        {/* Additional premium decorations */}
-        <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-esg-amber-500/5 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
-        <div className="absolute bottom-1/4 right-1/3 w-56 h-56 bg-esg-blue-500/5 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+        {/* Additional decorative elements */}
+        <div className="absolute top-[15%] right-[20%] w-1 h-20 bg-primary/10 rounded-full pointer-events-none"></div>
+        <div className="absolute top-[25%] right-[15%] w-1 h-10 bg-primary/10 rounded-full pointer-events-none"></div>
+        <div className="absolute top-[35%] right-[25%] w-1 h-40 bg-primary/10 rounded-full pointer-events-none"></div>
+        
+        <div className="absolute bottom-[20%] left-[15%] w-1 h-24 bg-primary/10 rounded-full pointer-events-none"></div>
+        <div className="absolute bottom-[30%] left-[20%] w-1 h-16 bg-primary/10 rounded-full pointer-events-none"></div>
+        <div className="absolute bottom-[40%] left-[25%] w-1 h-32 bg-primary/10 rounded-full pointer-events-none"></div>
         
         <Navbar />
         <main className="flex-1 relative z-10">
@@ -48,10 +53,10 @@ const MainLayout = () => {
               <div className="py-6 flex justify-center">
                 <ThemeToggle variant="button" />
               </div>
-              <div className="text-center text-sm text-muted-foreground pb-4 flex items-center justify-center gap-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-esg-amber-400" />
-                <span>Change your visual experience</span>
-                <Sparkles className="h-3.5 w-3.5 text-esg-amber-400" />
+              <div className="text-center text-sm text-muted-foreground pb-4 flex items-center justify-center gap-1.5 font-serif italic">
+                <Sparkles className="h-3.5 w-3.5 text-esg-gold-400" />
+                <span>Changer votre expérience visuelle</span>
+                <Sparkles className="h-3.5 w-3.5 text-esg-gold-400" />
               </div>
             </SheetContent>
           </Sheet>
